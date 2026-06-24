@@ -1,0 +1,9 @@
+.DS_Store
+.env
+*.log
+
+# Local model artifacts are large and should be downloaded per machine.
+models/**/*.gguf
+models/**/*.gguf.*
+models/**/.cache/
+models/**/*.tmp
