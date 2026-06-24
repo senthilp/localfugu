@@ -5,11 +5,31 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
+port_override_set=0
+if [[ -n "${PORT+x}" ]]; then
+  port_override="$PORT"
+  port_override_set=1
+fi
+
+extra_args_override_set=0
+if [[ -n "${LLAMA_EXTRA_ARGS+x}" ]]; then
+  extra_args_override="$LLAMA_EXTRA_ARGS"
+  extra_args_override_set=1
+fi
+
 if [[ -f "$ROOT_DIR/.env" ]]; then
   set -a
   # shellcheck source=/dev/null
   source "$ROOT_DIR/.env"
   set +a
+fi
+
+if [[ "$port_override_set" == "1" ]]; then
+  PORT="$port_override"
+fi
+
+if [[ "$extra_args_override_set" == "1" ]]; then
+  LLAMA_EXTRA_ARGS="$extra_args_override"
 fi
 
 : "${MODEL_REPO:=unsloth/Qwen3.6-35B-A3B-GGUF}"
@@ -90,4 +110,8 @@ echo "Model: $model_path"
 echo "Endpoint: http://$HOST:$PORT/v1/chat/completions"
 echo
 
-exec "${server_cmd[@]}" "${server_args[@]}" "${extra_args[@]}"
+if [[ ${#extra_args[@]} -gt 0 ]]; then
+  exec "${server_cmd[@]}" "${server_args[@]}" "${extra_args[@]}"
+else
+  exec "${server_cmd[@]}" "${server_args[@]}"
+fi

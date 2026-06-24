@@ -21,8 +21,8 @@ Make this repository a reproducible setup for downloading an open-weight GGUF mo
 - [x] Add inference server script.
 - [x] Add service smoke test script.
 - [x] Rewrite `README.md` with clone-to-serve instructions.
-- [ ] Optionally download the default model locally after explicit approval.
-- [ ] Verify the local service starts and responds to a chat completion request.
+- [x] Optionally download the default model locally after explicit approval.
+- [x] Verify the local service starts and responds to a chat completion request.
 
 ## Implementation Steps
 
@@ -69,4 +69,5 @@ Smoke test:
 - Script syntax has been validated with `bash -n`.
 - Host prerequisites were installed with Homebrew: `hf` 1.20.1 and `llama.cpp` 9780.
 - The download script supports `DRY_RUN=1` and has confirmed the default GGUF file is available at 29.3 GB.
-- The default GGUF has not been downloaded yet, so full service verification remains pending.
+- The default GGUF has been downloaded to `models/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-UD-Q6_K.gguf`.
+- Service verification succeeded with `PORT=8081 ./scripts/smoke-test.sh` against llama.cpp 9780.

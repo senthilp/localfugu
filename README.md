@@ -47,6 +47,25 @@ The service listens on:
 http://127.0.0.1:8080/v1/chat/completions
 ```
 
+To use another port, pass the same `PORT` value to both scripts:
+
+```sh
+PORT=8081 ./scripts/serve.sh
+PORT=8081 ./scripts/smoke-test.sh
+```
+
+The OpenAI-compatible response text is in:
+
+```text
+choices[0].message.content
+```
+
+If `message.content` is empty and `message.reasoning_content` is populated, restart the server with reasoning disabled:
+
+```sh
+PORT=8081 LLAMA_EXTRA_ARGS="--jinja --reasoning off" ./scripts/serve.sh
+```
+
 ## Configuration
 
 Edit `.env` to change model, quant, host, port, or context size.
@@ -58,6 +77,7 @@ MODEL_REPO=unsloth/Qwen3.6-35B-A3B-GGUF
 MODEL_FILE=Qwen3.6-35B-A3B-UD-Q6_K.gguf
 MODEL_DIR=models/Qwen3.6-35B-A3B-GGUF
 CTX_SIZE=65536
+LLAMA_EXTRA_ARGS=--jinja --reasoning off
 ```
 
 For a lighter setup, switch to:
